@@ -1,27 +1,48 @@
 import React, { Suspense, useEffect, useState } from "react";
 import { Canvas } from "@react-three/fiber";
 import { OrbitControls, Preload, useGLTF } from "@react-three/drei";
+import * as THREE from 'three';
 
 import CanvasLoader from "../Loader";
 
 const Computers = ({ isMobile }) => {
-  const computer = useGLTF("./desktop_pc/scene.gltf");
+  const { scene } = useGLTF("./desktop_pc/scene.gltf");
+
+  useEffect(() => {
+    // Traverse the scene and modify materials
+    scene.traverse((child) => {
+      if (child.isMesh) {
+        console.log('Original Material:', child.material);
+        
+        // Check and replace existing materials as needed
+        const currentMaterial = child.material;
+
+        // Ensure the material is a standard type to apply changes
+        if (currentMaterial && currentMaterial.isMeshStandardMaterial) {
+          const newMaterial = currentMaterial.clone();
+          newMaterial.color.setHSL(Math.random(), 1, 0.5); // Random hue, full saturation, mid lightness
+          child.material = newMaterial;
+          console.log('Updated Material:', child.material);
+        }
+      }
+    });
+  }, [scene]);
 
   return (
     <mesh>
-      <hemisphereLight intensity={0.15} groundColor='black' />
+      <hemisphereLight intensity={0.35} groundColor='black' />
       <spotLight
         position={[-20, 50, 10]}
         angle={0.12}
         penumbra={1}
-        intensity={1}
+        intensity={1.5}
         castShadow
         shadow-mapSize={1024}
       />
-      <pointLight intensity={1} />
+      <pointLight intensity={1.5} />
       <primitive
-        object={computer.scene}
-        scale={isMobile ? 0.7 : 0.75}
+        object={scene}
+        scale={isMobile ? 2 : 2.5}
         position={isMobile ? [0, -3, -2.2] : [0, -3.25, -1.5]}
         rotation={[-0.01, -0.2, -0.1]}
       />
@@ -33,21 +54,15 @@ const ComputersCanvas = () => {
   const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
-    // Add a listener for changes to the screen size
     const mediaQuery = window.matchMedia("(max-width: 500px)");
-
-    // Set the initial value of the `isMobile` state variable
     setIsMobile(mediaQuery.matches);
 
-    // Define a callback function to handle changes to the media query
     const handleMediaQueryChange = (event) => {
       setIsMobile(event.matches);
     };
 
-    // Add the callback function as a listener for changes to the media query
     mediaQuery.addEventListener("change", handleMediaQueryChange);
 
-    // Remove the listener when the component is unmounted
     return () => {
       mediaQuery.removeEventListener("change", handleMediaQueryChange);
     };
@@ -63,9 +78,11 @@ const ComputersCanvas = () => {
     >
       <Suspense fallback={<CanvasLoader />}>
         <OrbitControls
-          enableZoom={false}
-          maxPolarAngle={Math.PI / 2}
-          minPolarAngle={Math.PI / 2}
+          enableZoom={false} 
+          enableRotate={true} 
+          enablePan={false} 
+          maxPolarAngle={Math.PI} 
+          minPolarAngle={0} 
         />
         <Computers isMobile={isMobile} />
       </Suspense>
