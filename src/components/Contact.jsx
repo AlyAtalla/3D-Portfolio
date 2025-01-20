@@ -37,7 +37,7 @@ const Contact = () => {
         import.meta.env.REACT_APP_EMAILJS_TEMPLATE_ID,
         {
           from_name: form.name,
-          to_name: "ALy Atalla",
+          to_name: "Aly Atalla",
           from_email: form.email,
           to_email: "aliatalla93@gmail.com",
           message: form.message,
