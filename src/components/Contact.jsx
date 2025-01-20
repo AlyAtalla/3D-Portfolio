@@ -31,10 +31,20 @@ const Contact = () => {
     e.preventDefault();
     setLoading(true);
 
+    const serviceId = import.meta.env.REACT_APP_EMAILJS_SERVICE_ID || "service_6omojbi";
+    const templateId = import.meta.env.REACT_APP_EMAILJS_TEMPLATE_ID || "template_8vrkk5i";
+    const publicKey = import.meta.env.REACT_APP_EMAILJS_PUBLIC_KEY || "U7rY7GQgQfQ1TATvm";
+
+    if (!publicKey) {
+      alert("The public key is required. Visit https://dashboard.emailjs.com/admin/account to get your public key.");
+      setLoading(false);
+      return;
+    }
+
     emailjs
       .send(
-        import.meta.env.REACT_APP_EMAILJS_SERVICE_ID,
-        import.meta.env.REACT_APP_EMAILJS_TEMPLATE_ID,
+        serviceId,
+        templateId,
         {
           from_name: form.name,
           to_name: "Aly Atalla",
@@ -42,7 +52,7 @@ const Contact = () => {
           to_email: "aliatalla93@gmail.com",
           message: form.message,
         },
-        import.meta.env.REACT_APP_EMAILJS_PUBLIC_KEY
+        publicKey
       )
       .then(
         () => {
