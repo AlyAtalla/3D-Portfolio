@@ -20,7 +20,8 @@ const Computers = ({ isMobile }) => {
         // Ensure the material is a standard type to apply changes
         if (currentMaterial && currentMaterial.isMeshStandardMaterial) {
           const newMaterial = currentMaterial.clone();
-          newMaterial.color.setHSL(Math.random(), 1, 0.5); // Random hue, full saturation, mid lightness
+          newMaterial.color.setHSL(0.6, 1, 0.5); // Set a fixed color
+          newMaterial.needsUpdate = true; // Ensure the material updates
           child.material = newMaterial;
           console.log('Updated Material:', child.material);
         }
@@ -30,19 +31,10 @@ const Computers = ({ isMobile }) => {
 
   return (
     <mesh>
-      <hemisphereLight intensity={0.35} groundColor='black' />
-      <spotLight
-        position={[-20, 50, 10]}
-        angle={0.12}
-        penumbra={1}
-        intensity={1.5}
-        castShadow
-        shadow-mapSize={1024}
-      />
-      <pointLight intensity={1.5} />
+      
       <primitive
         object={scene}
-        scale={isMobile ? 2 : 2.5}
+        scale={isMobile ? 2 : 2.5} // Increased scale to make the model bigger
         position={isMobile ? [0, -3, -2.2] : [0, -3.25, -1.5]}
         rotation={[-0.01, -0.2, -0.1]}
       />
@@ -78,11 +70,11 @@ const ComputersCanvas = () => {
     >
       <Suspense fallback={<CanvasLoader />}>
         <OrbitControls
-          enableZoom={false} 
-          enableRotate={true} 
-          enablePan={false} 
-          maxPolarAngle={Math.PI} 
-          minPolarAngle={0} 
+          enableZoom={false} // Disable zoom
+          enableRotate={true} // Enable rotation
+          enablePan={false} // Disable panning
+          maxPolarAngle={Math.PI} // Allow full rotation around the center
+          minPolarAngle={0} // Allow full rotation around the center
         />
         <Computers isMobile={isMobile} />
       </Suspense>
