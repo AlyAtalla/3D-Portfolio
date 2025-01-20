@@ -31,7 +31,6 @@ const Computers = ({ isMobile }) => {
 
   return (
     <mesh>
-      
       <primitive
         object={scene}
         scale={isMobile ? 2 : 2.5} // Increased scale to make the model bigger
