@@ -1,0 +1,16 @@
+.hero {
+    display: block; /* Ensure the hero section is displayed */
+    width: 100%; /* Ensure the hero section takes full width */
+    height: auto; /* Ensure the hero section height adjusts automatically */
+    /* Add any other necessary styles for the hero section */
+}
+
+/* Check for media queries that might be affecting the visibility on mobile devices */
+@media (max-width: 768px) {
+    .hero {
+        display: block; /* Ensure the hero section is displayed on mobile devices */
+        width: 100%; /* Ensure the hero section takes full width on mobile */
+        height: auto; /* Ensure the hero section height adjusts automatically on mobile */
+        /* Add any other necessary styles for the hero section on mobile */
+    }
+}
