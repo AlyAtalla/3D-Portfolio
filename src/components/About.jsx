@@ -47,11 +47,14 @@ const About = () => {
         variants={fadeIn("", "", 0.1, 1)}
         className='mt-4 text-secondary text-[17px] max-w-3xl leading-[30px]'
       >
-        I'm a skilled software developer with experience in TypeScript and
-        JavaScript, and expertise in frameworks like React, Node.js, and
-        Three.js. I'm a quick learner and collaborate closely with clients to
-        create efficient, scalable, and user-friendly solutions that solve
-        real-world problems. Let's work together to bring your ideas to life!
+        I'm a passionate Full-Stack Developer and AI/LLM Research Contributor, with expertise 
+in TypeScript, JavaScript, and frameworks like React, Node.js, and Three.js. As a 
+Microverse graduate, I've honed my skills through remote pair programming and 
+cross-cultural collaboration. My experience in LLM training and AI research adds a 
+unique perspective to my development approach. I excel at creating efficient, 
+scalable solutions while contributing to the advancement of AI technology. 
+Let's collaborate to transform your ideas into impactful solutions at the 
+intersection of web development and artificial intelligence!
       </motion.p>
 
       <div className='mt-20 flex flex-wrap gap-10'>
