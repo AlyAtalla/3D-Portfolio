@@ -6,7 +6,7 @@ import * as THREE from 'three';
 import CanvasLoader from "../Loader";
 
 const Computers = ({ isMobile }) => {
-  const { scene } = useGLTF(isMobile ? "./desktop_pc_simple/scene.gltf" : "./desktop_pc/scene.gltf");
+  const { scene } = useGLTF("./desktop_pc/scene.gltf");
 
   useEffect(() => {
     // Traverse the scene and modify materials
@@ -43,7 +43,6 @@ const Computers = ({ isMobile }) => {
 
 const ComputersCanvas = () => {
   const [isMobile, setIsMobile] = useState(false);
-  const [webglSupported, setWebglSupported] = useState(true);
 
   useEffect(() => {
     const mediaQuery = window.matchMedia("(max-width: 500px)");
@@ -55,25 +54,10 @@ const ComputersCanvas = () => {
 
     mediaQuery.addEventListener("change", handleMediaQueryChange);
 
-    // Check for WebGL support
-    if (!window.WebGLRenderingContext) {
-      setWebglSupported(false);
-    } else {
-      const canvas = document.createElement('canvas');
-      const gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl');
-      if (!gl) {
-        setWebglSupported(false);
-      }
-    }
-
     return () => {
       mediaQuery.removeEventListener("change", handleMediaQueryChange);
     };
   }, []);
-
-  if (!webglSupported) {
-    return <div>WebGL is not supported on this device.</div>;
-  }
 
   return (
     <Canvas
