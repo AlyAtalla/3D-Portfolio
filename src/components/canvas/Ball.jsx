@@ -27,7 +27,8 @@ const Stars = (props) => {
   );
 };
 
-const StarsCanvas = () => {
+// Keeping BallCanvas name but it's exactly like StarsCanvas
+const BallCanvas = () => {
   return (
     <div className='w-full h-auto absolute inset-0 z-[-1]'>
       <Canvas camera={{ position: [0, 0, 1] }}>
@@ -41,4 +42,4 @@ const StarsCanvas = () => {
   );
 };
 
-export default StarsCanvas;
+export default BallCanvas;
