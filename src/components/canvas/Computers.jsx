@@ -1,21 +1,27 @@
 import React, { Suspense, useEffect, useState } from "react";
 import { Canvas } from "@react-three/fiber";
-import { OrbitControls, Preload } from "@react-three/drei";
+import { OrbitControls, Preload, useGLTF } from "@react-three/drei";
 
 import CanvasLoader from "../Loader";
 
-const Computers = () => {
-  const { scene } = useGLTF("./desktop_pc/scene.gltf");
+const Computers = ({ isMobile }) => {
+  // Load different models based on the device type
+  const desktopScene = useGLTF("./desktop_pc/scene.gltf").scene;
+  const mobileScene = useGLTF("./wings/scene.gltf").scene;
+
+  // Select the appropriate scene
+  const scene = isMobile ? mobileScene : desktopScene;
 
   useEffect(() => {
+    // Traverse the scene and modify materials
     scene.traverse((child) => {
       if (child.isMesh) {
         const currentMaterial = child.material;
 
         if (currentMaterial && currentMaterial.isMeshStandardMaterial) {
           const newMaterial = currentMaterial.clone();
-          newMaterial.color.setHSL(0.6, 1, 0.5);
-          newMaterial.needsUpdate = true;
+          newMaterial.color.setHSL(0.6, 1, 0.5); // Set a fixed color
+          newMaterial.needsUpdate = true; // Ensure the material updates
           child.material = newMaterial;
         }
       }
@@ -26,41 +32,11 @@ const Computers = () => {
     <mesh>
       <primitive
         object={scene}
-        scale={2.5}
-        position={[0, -3.25, -1.5]}
+        scale={isMobile ? 2 : 2.5}
+        position={isMobile ? [0, -3, -2.2] : [0, -3.25, -1.5]}
         rotation={[-0.01, -0.2, -0.1]}
       />
     </mesh>
-  );
-};
-
-const CreativeEffect = () => {
-  return (
-    <div
-      style={{
-        width: "100%",
-        height: "100%",
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        background: "linear-gradient(135deg, #ff7e5f, #feb47b)",
-        color: "white",
-        fontSize: "2rem",
-        fontWeight: "bold",
-        animation: "background-slide 5s linear infinite",
-      }}
-    >
-      let's Start our  Creative Journey!
-      <style>
-        {`
-          @keyframes background-slide {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-          }
-        `}
-      </style>
-    </div>
   );
 };
 
@@ -82,9 +58,7 @@ const ComputersCanvas = () => {
     };
   }, []);
 
-  return isMobile ? (
-    <CreativeEffect />
-  ) : (
+  return (
     <Canvas
       frameloop="demand"
       shadows
@@ -100,7 +74,7 @@ const ComputersCanvas = () => {
           maxPolarAngle={Math.PI}
           minPolarAngle={0}
         />
-        <Computers />
+        <Computers isMobile={isMobile} />
       </Suspense>
 
       <Preload all />
