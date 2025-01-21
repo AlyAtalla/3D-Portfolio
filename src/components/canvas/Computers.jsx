@@ -7,7 +7,7 @@ import CanvasLoader from "../Loader";
 const Computers = ({ isMobile }) => {
   // Load different models based on the device type
   const desktopScene = useGLTF("./desktop_pc/scene.gltf").scene;
-  const mobileScene = useGLTF("./old-pc/scene.gltf").scene;
+  const mobileScene = useGLTF("./wings/scene.gltf").scene;
 
   // Select the appropriate scene
   const scene = isMobile ? mobileScene : desktopScene;
