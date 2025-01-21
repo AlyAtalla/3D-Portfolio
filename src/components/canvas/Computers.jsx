@@ -1,29 +1,28 @@
 import React, { Suspense, useEffect, useState } from "react";
 import { Canvas } from "@react-three/fiber";
 import { OrbitControls, Preload, useGLTF } from "@react-three/drei";
-import * as THREE from 'three';
 
 import CanvasLoader from "../Loader";
 
 const Computers = ({ isMobile }) => {
-  const { scene } = useGLTF("./desktop_pc/scene.gltf");
+  // Load different models based on the device type
+  const desktopScene = useGLTF("./desktop_pc/scene.gltf").scene;
+  const mobileScene = useGLTF("./old-pc/scene.gltf").scene;
+
+  // Select the appropriate scene
+  const scene = isMobile ? mobileScene : desktopScene;
 
   useEffect(() => {
     // Traverse the scene and modify materials
     scene.traverse((child) => {
       if (child.isMesh) {
-        console.log('Original Material:', child.material);
-        
-        // Check and replace existing materials as needed
         const currentMaterial = child.material;
 
-        // Ensure the material is a standard type to apply changes
         if (currentMaterial && currentMaterial.isMeshStandardMaterial) {
           const newMaterial = currentMaterial.clone();
           newMaterial.color.setHSL(0.6, 1, 0.5); // Set a fixed color
           newMaterial.needsUpdate = true; // Ensure the material updates
           child.material = newMaterial;
-          console.log('Updated Material:', child.material);
         }
       }
     });
@@ -31,10 +30,9 @@ const Computers = ({ isMobile }) => {
 
   return (
     <mesh>
-      
       <primitive
         object={scene}
-        scale={isMobile ? 2 : 2.5} // Increased scale to make the model bigger
+        scale={isMobile ? 2 : 2.5}
         position={isMobile ? [0, -3, -2.2] : [0, -3.25, -1.5]}
         rotation={[-0.01, -0.2, -0.1]}
       />
@@ -62,7 +60,7 @@ const ComputersCanvas = () => {
 
   return (
     <Canvas
-      frameloop='demand'
+      frameloop="demand"
       shadows
       dpr={[1, 2]}
       camera={{ position: [20, 3, 5], fov: 25 }}
@@ -70,11 +68,11 @@ const ComputersCanvas = () => {
     >
       <Suspense fallback={<CanvasLoader />}>
         <OrbitControls
-          enableZoom={false} // Disable zoom
-          enableRotate={true} // Enable rotation
-          enablePan={false} // Disable panning
-          maxPolarAngle={Math.PI} // Allow full rotation around the center
-          minPolarAngle={0} // Allow full rotation around the center
+          enableZoom={false}
+          enableRotate={true}
+          enablePan={false}
+          maxPolarAngle={Math.PI}
+          minPolarAngle={0}
         />
         <Computers isMobile={isMobile} />
       </Suspense>
