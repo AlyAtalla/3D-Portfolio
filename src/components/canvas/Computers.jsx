@@ -31,6 +31,16 @@ const Computers = ({ isMobile }) => {
 
   return (
     <mesh>
+      <hemisphereLight intensity={0.35} groundColor='black' />
+      <spotLight
+        position={[-20, 50, 10]}
+        angle={0.12}
+        penumbra={1}
+        intensity={1.5}
+        castShadow
+        shadow-mapSize={1024}
+      />
+      <pointLight intensity={1.5} />
       <primitive
         object={scene}
         scale={isMobile ? 2 : 2.5} // Increased scale to make the model bigger
